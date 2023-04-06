@@ -28,6 +28,7 @@ impl Board {
 
     fn place_mark(&mut self, row: usize, col: usize, mark: char) {
         self.grid[row][col] = mark;
+        print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
     }
 
     fn check_win(&self, mark: char) -> bool {
@@ -56,15 +57,14 @@ impl Board {
 
 fn main() {
     let mut board = Board::new();
-    let mut current_player = 'O';
+    let mut current_player = 'X';
 
     println!("Welcome to Tic Tac Toe!");
-
+    print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
     loop {
-
         board.display();
 
-        print!("Player {}, enter your move (row -> column): ", current_player);
+        print!("Player {}, enter your move (row column): ", current_player);
         io::stdout().flush().unwrap();
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
@@ -74,6 +74,7 @@ fn main() {
             .collect();
 
         if coords.len() != 2 {
+            print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
             println!("Invalid input");
             continue;
         }
@@ -82,12 +83,14 @@ fn main() {
         let col = coords[1] - 1;
 
         if row >= 3 || col >= 3 {
+            print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
             println!("Invalid move");
             continue;
         }
 
         if !board.is_empty(row, col) {
-            println!("Cannot move there!");
+            print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+            println!("Cell already occupied");
             continue;
         }
 
